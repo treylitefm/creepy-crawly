@@ -23,7 +23,7 @@ def visit(url, domain, visited, master_list):
         return 'yo'
 
     links = soup('a')
-    master_list = master_list.union(links)
+    master_list += links
 
     #TODO: reimplement using only 1 loop
     links = filter(lambda l: l['href'] if l.has_attr('href') else False, links)
@@ -37,8 +37,20 @@ def visit(url, domain, visited, master_list):
 domain = 'http://www.codingdojo.com'
 
 visited = {}
-master = set()
+master = []
 
 visit('/', domain, visited, master)
 print visited
-print master
+
+count_master = {}
+
+master = filter(lambda l: l['href'] if l.has_attr('href') else False, master)
+master = map(lambda l: l['href'], master)
+
+for link in master:
+    if count_master.has_key(link):
+        count_master[link] += 1
+    else:
+        count_master[link] = 1
+
+print count_master
